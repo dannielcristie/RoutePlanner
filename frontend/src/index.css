@@ -399,3 +399,131 @@ button {
     width: 100%;
   }
 }
+
+/* History Container */
+.history-container {
+  margin-bottom: 2rem;
+}
+
+.history-container h3 {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.history-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.history-chip {
+  display: flex;
+  align-items: stretch;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.history-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.history-chip.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.history-chip-action {
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  color: var(--text-color);
+  background: transparent;
+  border: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.history-chip-action:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.history-chip-delete {
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.history-chip-delete:hover {
+  color: var(--danger-color);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.history-chip-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inline-icon {
+  color: var(--text-muted);
+}
+
+/* Drag Handle */
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 0.5rem;
+  transition: color 0.2s;
+}
+
+.drag-handle:hover {
+  color: var(--primary-color) !important;
+}
+
+/* Google Places Autocomplete Fixes */
+.pac-container {
+  background-color: var(--bg-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  font-family: inherit;
+  margin-top: 5px;
+  z-index: 1000;
+}
+
+.pac-item {
+  color: var(--text-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.pac-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.pac-item-query {
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+.pac-icon {
+  display: none;
+}
