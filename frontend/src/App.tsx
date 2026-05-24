@@ -2,7 +2,7 @@ import { useState } from 'react';
 import RouteForm from './components/RouteForm';
 import RouteResult from './components/RouteResult';
 import { getRouteInfo } from './services/api';
-import { RouteResponse } from './types';
+import type { RouteResponse } from './types';
 import { Map as MapIcon } from 'lucide-react';
 
 function App() {

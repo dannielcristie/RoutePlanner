@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RouteResponse } from '../types';
+import type { RouteResponse } from '../types';
 
 const api = axios.create({
   baseURL: 'http://localhost:3000',

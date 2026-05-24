@@ -1,36 +1,58 @@
 import React, { useState } from 'react';
-import { MapPin, Plus, Trash2, Map } from 'lucide-react';
+import { MapPin, Plus, Trash2, Map, Settings } from 'lucide-react';
 
 interface RouteFormProps {
   onSubmit: (points: string[]) => void;
   loading: boolean;
 }
 
+type RouteMode = 'custom' | 'origem-destino' | 'base-origem-destino-base' | 'base-origem-base';
+
 const RouteForm: React.FC<RouteFormProps> = ({ onSubmit, loading }) => {
-  const [points, setPoints] = useState<string[]>(['', '']);
+  const [mode, setMode] = useState<RouteMode>('origem-destino');
+  
+  // Custom mode points
+  const [customPoints, setCustomPoints] = useState<string[]>(['', '']);
+  
+  // Preset mode points
+  const [base, setBase] = useState('');
+  const [origem, setOrigem] = useState('');
+  const [destino, setDestino] = useState('');
 
-  const handlePointChange = (index: number, value: string) => {
-    const newPoints = [...points];
+  const handleCustomPointChange = (index: number, value: string) => {
+    const newPoints = [...customPoints];
     newPoints[index] = value;
-    setPoints(newPoints);
+    setCustomPoints(newPoints);
   };
 
-  const addPoint = () => {
-    setPoints([...points, '']);
+  const addCustomPoint = () => {
+    setCustomPoints([...customPoints, '']);
   };
 
-  const removePoint = (index: number) => {
-    const newPoints = points.filter((_, i) => i !== index);
-    setPoints(newPoints);
+  const removeCustomPoint = (index: number) => {
+    const newPoints = customPoints.filter((_, i) => i !== index);
+    setCustomPoints(newPoints);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const validPoints = points.map(p => p.trim()).filter(p => p.length > 0);
-    if (validPoints.length >= 2) {
-      onSubmit(validPoints);
+    
+    let finalPoints: string[] = [];
+
+    if (mode === 'custom') {
+      finalPoints = customPoints.map(p => p.trim()).filter(p => p.length > 0);
+    } else if (mode === 'origem-destino') {
+      finalPoints = [origem, destino].map(p => p.trim()).filter(p => p.length > 0);
+    } else if (mode === 'base-origem-destino-base') {
+      finalPoints = [base, origem, destino, base].map(p => p.trim()).filter(p => p.length > 0);
+    } else if (mode === 'base-origem-base') {
+      finalPoints = [base, origem, base].map(p => p.trim()).filter(p => p.length > 0);
+    }
+
+    if (finalPoints.length >= 2) {
+      onSubmit(finalPoints);
     } else {
-      alert('Por favor, informe pelo menos uma origem e um destino válidos.');
+      alert('Por favor, preencha todos os campos obrigatórios da rota.');
     }
   };
 
@@ -39,27 +61,44 @@ const RouteForm: React.FC<RouteFormProps> = ({ onSubmit, loading }) => {
       <h2 className="card-title">
         <Map className="icon" /> Planejar Rota
       </h2>
+
+      <div className="mode-selector">
+        <label className="mode-label">
+          <Settings size={16} /> Tipo de Rota:
+        </label>
+        <select 
+          className="mode-select" 
+          value={mode} 
+          onChange={(e) => setMode(e.target.value as RouteMode)}
+        >
+          <option value="origem-destino">Origem para Destino</option>
+          <option value="base-origem-base">Base ➔ Origem ➔ Base</option>
+          <option value="base-origem-destino-base">Base ➔ Origem ➔ Destino ➔ Base</option>
+          <option value="custom">Personalizado (Múltiplos Pontos)</option>
+        </select>
+      </div>
+
       <div className="points-list">
-        {points.map((point, index) => (
+        {mode === 'custom' && customPoints.map((point, index) => (
           <div key={index} className="point-input-group">
             <div className="point-marker">
-              {index === 0 ? 'A' : index === points.length - 1 ? 'B' : index}
+              {index === 0 ? 'A' : index === customPoints.length - 1 ? 'B' : index}
             </div>
             <div className="input-wrapper">
               <MapPin className="input-icon" size={18} />
               <input
                 type="text"
-                placeholder={index === 0 ? "Origem (Ex: Fortaleza)" : index === points.length - 1 ? "Destino" : "Ponto intermediário"}
+                placeholder={index === 0 ? "Origem" : index === customPoints.length - 1 ? "Destino" : "Ponto intermediário"}
                 value={point}
-                onChange={(e) => handlePointChange(index, e.target.value)}
-                required={index === 0 || index === points.length - 1}
+                onChange={(e) => handleCustomPointChange(index, e.target.value)}
+                required={index === 0 || index === customPoints.length - 1}
               />
             </div>
-            {points.length > 2 && (
+            {customPoints.length > 2 && (
               <button
                 type="button"
                 className="btn-icon remove-btn"
-                onClick={() => removePoint(index)}
+                onClick={() => removeCustomPoint(index)}
                 title="Remover ponto"
               >
                 <Trash2 size={18} />
@@ -67,11 +106,66 @@ const RouteForm: React.FC<RouteFormProps> = ({ onSubmit, loading }) => {
             )}
           </div>
         ))}
+
+        {mode !== 'custom' && (
+          <>
+            {(mode === 'base-origem-destino-base' || mode === 'base-origem-base') && (
+              <div className="point-input-group">
+                <div className="point-marker">B</div>
+                <div className="input-wrapper">
+                  <MapPin className="input-icon" size={18} />
+                  <input
+                    type="text"
+                    placeholder="Base (Ex: Garagem)"
+                    value={base}
+                    onChange={(e) => setBase(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="point-input-group">
+              <div className="point-marker">O</div>
+              <div className="input-wrapper">
+                <MapPin className="input-icon" size={18} />
+                <input
+                  type="text"
+                  placeholder="Origem"
+                  value={origem}
+                  onChange={(e) => setOrigem(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            {(mode === 'origem-destino' || mode === 'base-origem-destino-base') && (
+              <div className="point-input-group">
+                <div className="point-marker">D</div>
+                <div className="input-wrapper">
+                  <MapPin className="input-icon" size={18} />
+                  <input
+                    type="text"
+                    placeholder="Destino"
+                    value={destino}
+                    onChange={(e) => setDestino(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
+
       <div className="form-actions">
-        <button type="button" className="btn-secondary" onClick={addPoint}>
-          <Plus size={18} /> Adicionar Parada
-        </button>
+        {mode === 'custom' ? (
+          <button type="button" className="btn-secondary" onClick={addCustomPoint}>
+            <Plus size={18} /> Adicionar Parada
+          </button>
+        ) : (
+          <div></div> /* Spacer */
+        )}
         <button type="submit" className="btn-primary" disabled={loading}>
           {loading ? 'Calculando...' : 'Calcular Rota'}
         </button>

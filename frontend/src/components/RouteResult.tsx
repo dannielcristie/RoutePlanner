@@ -1,6 +1,6 @@
 import React from 'react';
-import { RouteResponse } from '../types';
-import { Clock, Route, Navigation } from 'lucide-react';
+import type { RouteResponse } from '../types';
+import { Clock, Route, Navigation, ExternalLink } from 'lucide-react';
 
 interface RouteResultProps {
   data: RouteResponse | null;
@@ -9,11 +9,31 @@ interface RouteResultProps {
 const RouteResult: React.FC<RouteResultProps> = ({ data }) => {
   if (!data) return null;
 
+  const origin = data.legs[0].from;
+  const destination = data.legs[data.legs.length - 1].to;
+  
+  const waypoints = data.legs.length > 1 
+    ? data.legs.slice(0, -1).map(leg => encodeURIComponent(leg.to)).join('|')
+    : '';
+
+  const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}${waypoints ? `&waypoints=${waypoints}` : ''}&travelmode=driving`;
+
   return (
     <div className="glass-card result-container">
-      <h2 className="card-title">
-        <Navigation className="icon" /> Resumo da Viagem
-      </h2>
+      <div className="card-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <Navigation className="icon" /> Resumo da Viagem
+        </div>
+        <a 
+          href={mapsUrl} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="btn-secondary" 
+          style={{ textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem' }}
+        >
+          <ExternalLink size={16} /> Ver no Maps
+        </a>
+      </div>
       <div className="result-summary">
         <div className="summary-item">
           <Route className="summary-icon" size={24} />
