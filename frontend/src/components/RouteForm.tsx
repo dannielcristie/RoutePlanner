@@ -88,7 +88,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ onSubmit, loading }) => {
               <MapPin className="input-icon" size={18} />
               <input
                 type="text"
-                placeholder={index === 0 ? "Origem" : index === customPoints.length - 1 ? "Destino" : "Ponto intermediário"}
+                placeholder={index === 0 ? "Origem (Endereço ou Coordenadas)" : index === customPoints.length - 1 ? "Destino (Endereço ou Coordenadas)" : "Ponto intermediário"}
                 value={point}
                 onChange={(e) => handleCustomPointChange(index, e.target.value)}
                 required={index === 0 || index === customPoints.length - 1}
@@ -116,7 +116,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ onSubmit, loading }) => {
                   <MapPin className="input-icon" size={18} />
                   <input
                     type="text"
-                    placeholder="Base (Ex: Garagem)"
+                    placeholder="Base (Garagem, Coordenadas, etc.)"
                     value={base}
                     onChange={(e) => setBase(e.target.value)}
                     required
@@ -131,7 +131,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ onSubmit, loading }) => {
                 <MapPin className="input-icon" size={18} />
                 <input
                   type="text"
-                  placeholder="Origem"
+                  placeholder="Origem (Endereço, Local ou Coordenadas)"
                   value={origem}
                   onChange={(e) => setOrigem(e.target.value)}
                   required
@@ -146,7 +146,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ onSubmit, loading }) => {
                   <MapPin className="input-icon" size={18} />
                   <input
                     type="text"
-                    placeholder="Destino"
+                    placeholder="Destino (Endereço, Local ou Coordenadas)"
                     value={destino}
                     onChange={(e) => setDestino(e.target.value)}
                     required

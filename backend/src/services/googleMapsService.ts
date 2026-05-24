@@ -56,7 +56,7 @@ export class GoogleMapsService {
       
       const routesData = response.data;
       if (!routesData.routes || routesData.routes.length === 0) {
-        throw new Error('No routes found');
+        throw new Error('O Google Maps não encontrou nenhuma rota válida entre os locais informados.');
       }
 
       const mappedRoutes = routesData.routes.map(route => {
@@ -94,7 +94,17 @@ export class GoogleMapsService {
       };
     } catch (error: any) {
       if (error.response && error.response.data && error.response.data.error) {
-        throw new Error(`Google Maps API error: ${error.response.data.error.message}`);
+        const msg = error.response.data.error.message;
+        
+        if (msg.toLowerCase().includes('geocode') || msg.toLowerCase().includes('invalid')) {
+          throw new Error(`Não foi possível encontrar um dos locais informados. Verifique se o endereço ou coordenada está correto. (${msg})`);
+        }
+        
+        if (msg.toLowerCase().includes('route')) {
+          throw new Error(`O Google não conseguiu traçar uma rota de carro entre esses pontos. (${msg})`);
+        }
+
+        throw new Error(`Erro na API do Google: ${msg}`);
       }
       throw error;
     }
