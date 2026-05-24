@@ -3,7 +3,7 @@ import RouteForm from './components/RouteForm';
 import RouteResult from './components/RouteResult';
 import { getRouteInfo } from './services/api';
 import type { RouteResponse } from './types';
-import { Map as MapIcon, Clock, ArrowRight, X } from 'lucide-react';
+import { Clock, ArrowRight, X } from 'lucide-react';
 
 function App() {
   const [routeData, setRouteData] = useState<RouteResponse | null>(null);
@@ -47,11 +47,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <header className="app-header">
-        <MapIcon className="header-icon" size={32} />
-        <h1>Route Planner</h1>
-        <p>Planeje sua viagem com facilidade</p>
-      </header>
+
 
       <main className="app-main">
         <RouteForm onSubmit={handleCalculateRoute} loading={loading} />
