@@ -11,6 +11,7 @@ Um planejador de rotas Fullstack moderno e otimizado, desenvolvido com React, No
 - **Design Glassmorphism:** Interface moderna e polida utilizando técnicas avançadas de design translúcido em CSS puro.
 - **Otimização Extrema (Docker):** O Backend é empacotado em um único arquivo (via `tsup`), reduzindo drasticamente o consumo de disco (ignorando a pasta `node_modules` na imagem final) e travando o limite de RAM a 256MB pelo Docker Compose.
 - **TDD (Test-Driven Development):** Suíte de testes automatizados unitários focados na UI e na API, rodando em milissegundos via Vitest.
+- **Documentação Interativa:** API rigorosamente documentada com OpenAPI 3.1.0 e renderizada através do **Scalar**, oferecendo uma interface premium com modo escuro nativo e testes de requisição no próprio navegador.
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -26,6 +27,7 @@ Um planejador de rotas Fullstack moderno e otimizado, desenvolvido com React, No
 - **TypeScript** + **Tsup** (Bundler para imagens Docker microscópicas)
 - **Axios** (Integração de APIs REST)
 - **Vitest** + **Supertest** (Testes de integração simulando requests HTTP)
+- **Scalar + OpenAPI 3.1** (Documentação premium e interativa acoplada no express)
 
 ### DevOps e Infraestrutura
 - **Docker** e **Docker Compose** (Contêineres multi-stage e limitados por CPU/RAM)
@@ -69,6 +71,7 @@ Para rodar este projeto perfeitamente, você precisará de:
 4. **Acesse no navegador:**
    - **Interface Gráfica (Frontend):** `http://localhost:5173`
    - **Servidor API (Backend):** `http://localhost:3000`
+   - **Documentação da API (Scalar):** `http://localhost:3000/api-docs`
 
 ---
 
